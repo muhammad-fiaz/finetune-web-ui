@@ -112,6 +112,7 @@ finetune-web-ui/
 ├── logs/                 # Folder for storing logs
 └── configs/              # Directory for storing configuration files
 
+
 ```
 
 ---
@@ -140,7 +141,7 @@ This project is licensed under the AGPL-3.0 License. See the [LICENSE](LICENSE) 
 - [Hugging Face](https://huggingface.co/) - For pre-trained models and transformers
 - [PyTorch](https://pytorch.org/) - For deep learning framework
 - [Datasets](https://huggingface.co/datasets) - For providing datasets for training
-- [Unsloth](https://github.com/unsloth) - For **FastLanguageModel** and other contributions to the training pipeline
+- [Unsloth](https://github.com/unslothai) - For **FastLanguageModel** and other contributions to the training pipeline
 
 
 
