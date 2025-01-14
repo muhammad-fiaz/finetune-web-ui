@@ -110,8 +110,7 @@ finetune-web-ui/
 ├── .venv/                # Virtual environment directory
 ├── README.md             # Project documentation
 ├── logs/                 # Folder for storing logs
-└── models/               # Directory for storing pre-trained models and fine-tuned models
-    ├── data/                 # Folder for datasets (optional)
+└── configs/              # Directory for storing configuration files
 
 ```
 

@@ -2,3 +2,8 @@
 /outputs/
 
 .idea/
+/cookbook/outputs/
+/cookbook/main.exp
+/cookbook/lora_model/
+/cookbook/main.obj
+/cookbook/main.lib
