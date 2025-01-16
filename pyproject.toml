@@ -4,16 +4,15 @@ version = "0.0.0"
 description = "finetune-web-ui is a user-interface for training and deploying pre-trained models."
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.9, <3.13"
+requires-python = ">=3.11, <3.13"
 keywords = ["finetune-web-ui", "finetune", "web", "ui", "user-interface", "training", "deploying", "pre-trained", "models"]
 maintainers = [
-    {name="muhammad-fiaz" , email="<contact@muhammadfiaz.com>"}
+    {name="muhammad-fiaz",  email="<contact@muhammadfiaz.com>"}
 ]
 authors = [
     {email = "contact@muhammadfiaz.com"},
     {name = "muhammad-fiaz"},
 ]
-package-mode = false
 classifiers = [
     "Programming Language :: Python",
 ]
@@ -21,12 +20,19 @@ classifiers = [
 [tool.poetry]
 package-mode = false
 
+
 [tool.poetry.dependencies]
-python = ">=3.9, <3.13"
+python = ">=3.11,<3.13"
 logly = ">=0.0.6,<0.1.0"
 packaging = ">=24.0,<25.0"
 pandas = "^2.2"
 numpy = "^1.26"
+
+torch = {version = "^2.5.1", source = "pytorch-gpu"}
+torchvision = {version = "^0.20.1", source = "pytorch-gpu"}
+torchaudio = {version = "^2.5.1", source = "pytorch-gpu"}
+
+
 requests = "^2.32"
 tqdm = "^4.67"
 regex = "^2024.11"
@@ -35,77 +41,31 @@ tiktoken = "^0.8"
 blobfile = "^3.0"
 safetensors = "^0.5"
 huggingface-hub = "^0.27"
+
+triton = [
+    { platform = "win64", url = "https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp312-cp312-win_amd64.whl" }
+]
+xformers = [
+    { platform = "win64", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp312-cp312-win_amd64.whl"}
+]
+
 gradio = "^5.12"
 transformers = "^4.48"
 datasets = "^3.2"
 trl = "^0.13"
 peft = "^0.14"
 bitsandbytes = "^0.45"
+unsloth = { extras = ["cu124onlytorch251", "huggingface"], version = "^2025.1.3" }
+
+unsloth-zoo = " ^2025.1.3"
+
 accelerate = "^1.2.1"
 gradio-client = "^1.5.4"
-unsloth-zoo = "^2025.1.3"
 
-torch = [
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp39-cp39-win_amd64.whl", python = "^3.9"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp310-cp310-win_amd64.whl", python = "^3.10"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp311-cp311-win_amd64.whl", python = "^3.11"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp312-cp312-win_amd64.whl", python = "^3.12"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp39-cp39-linux_x86_64.whl", python = "^3.9"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp310-cp310-linux_x86_64.whl", python = "^3.10"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp311-cp311-linux_x86_64.whl", python = "^3.11"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp312-cp312-linux_x86_64.whl", python = "^3.12"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp313-cp313-linux_x86_64.whl", python = "^3.13"},
-    {platform = "darwin", version = "*"}
-]
-
-torchaudio = [
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp39-cp39-win_amd64.whl", python = "^3.9"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp310-cp310-win_amd64.whl", python = "^3.10"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp311-cp311-win_amd64.whl", python = "^3.11"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp312-cp312-win_amd64.whl", python = "^3.12"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp39-cp39-linux_x86_64.whl", python = "^3.9"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp310-cp310-linux_x86_64.whl", python = "^3.10"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp311-cp311-linux_x86_64.whl", python = "^3.11"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torchaudio-2.5.1%2Bcu124-cp312-cp312-linux_x86_64.whl", python = "^3.12"},
-    {platform = "darwin", version = "*"}
-]
-
-torchvision = [
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp39-cp39-win_amd64.whl", python = "^3.9"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp310-cp310-win_amd64.whl", python = "^3.10"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp311-cp311-win_amd64.whl", python = "^3.11"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp312-cp312-win_amd64.whl", python = "^3.12"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp39-cp39-linux_x86_64.whl", python = "^3.9"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp310-cp310-linux_x86_64.whl", python = "^3.10"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp311-cp311-linux_x86_64.whl", python = "^3.11"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp312-cp312-linux_x86_64.whl", python = "^3.12"},
-    {platform = "darwin", version = "*"}
-]
-
-triton = [
-    {platform = "win64", url = "https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp39-cp39-win_amd64.whl", python = "^3.9"},
-    {platform = "win64", url = "https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp310-cp310-win_amd64.whl", python = "^3.10"},
-    {platform = "win64", url = "https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp311-cp311-win_amd64.whl", python = "^3.11"},
-    {platform = "win64", url = "https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp312-cp312-win_amd64.whl", python = "^3.12"},
-    {platform = "linux", version = "*"},
-    {platform = "darwin", version = "*"}
-]
-
-xformers = [
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp39-cp39-win_amd64.whl", python = "^3.9"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp310-cp310-win_amd64.whl", python = "^3.10"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp311-cp311-win_amd64.whl", python = "^3.11"},
-    {platform = "win64", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp312-cp312-win_amd64.whl", python = "^3.12"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp39-cp39-manylinux_2_28_x86_64.whl", python = "^3.9"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp310-cp310-manylinux_2_28_x86_64.whl", python = "^3.10"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp311-cp311-manylinux_2_28_x86_64.whl", python = "^3.11"},
-    {platform = "linux", url = "https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp312-cp312-manylinux_2_28_x86_64.whl", python = "^3.12"},
-    {platform = "darwin", version = "*"}
-]
-
-
-unsloth = {extras = ["cu124onlytorch251", "huggingface"], version = "*"}
-
+[[tool.poetry.source]]
+name = "pytorch-gpu"
+url = "https://download.pytorch.org/whl/cu124"
+priority = "explicit"
 
 
 [project.urls]
@@ -118,7 +78,10 @@ repository = "https://github.com/muhammad-fiaz/finetune-web-ui"
 jupyter = "^1.1.1"
 ipykernel = "^6.29.5"
 poetry-plugin-export = "^1.9.0"
+poetry-plugin-bundle= "^1.5.0"
+poetry-plugin-shell= "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
