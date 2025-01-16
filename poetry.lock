@@ -5673,7 +5673,7 @@ description = "A language and compiler for custom Deep Learning operations"
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "python_version == \"3.11\" and platform_system == \"Linux\" or python_version == \"3.11\" and sys_platform == \"win64\" or python_version >= \"3.12\" and platform_system == \"Linux\" or python_version >= \"3.12\" and sys_platform == \"win64\""
+markers = "python_version == \"3.11\" or python_version >= \"3.12\""
 files = [
     {file = "triton-3.1.0-cp312-cp312-win_amd64.whl", hash = "sha256:89597e7f635b1826098693785d2328bc1587d4cb6a74352437d2c6018c5da40d"},
 ]
@@ -6578,4 +6578,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.13"
-content-hash = "f4c1c512be9957289a542c5b76110b90a3a1bb9ed8fcc6611c10873013e0e03c"
+content-hash = "369c469150abd3848e0e8151e5826c7eade9dbecc38a9968265df6dc509d1e30"
