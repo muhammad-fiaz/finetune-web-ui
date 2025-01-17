@@ -1,6 +1,8 @@
 import json
 import os
 from modules.config import MODELS_JSON_PATH  # If needed, still use this for config-based path
+from modules.logly import logly
+
 
 def load_models_from_json(json_file=None):
     """
@@ -23,10 +25,10 @@ def load_models_from_json(json_file=None):
             models = json.load(file)
         return models
     except FileNotFoundError:
-        print(f"Error: The file {json_file} was not found.")
+        logly.error(f"Error: The file {json_file} was not found.")
         return {}
     except json.JSONDecodeError:
-        print(f"Error: Failed to decode JSON from {json_file}.")
+        logly.error(f"Error: Failed to decode JSON from {json_file}.")
         return {}
 
 

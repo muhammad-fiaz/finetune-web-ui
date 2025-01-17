@@ -1,6 +1,8 @@
 import json
 import os
 from modules.config import DATASETS_JSON_PATH
+from modules.logly import logly
+
 
 def load_datasets_from_json(json_file=None):
 
@@ -13,10 +15,10 @@ def load_datasets_from_json(json_file=None):
             datasets = json.load(file)
         return datasets
     except FileNotFoundError:
-        print(f"Error: The file {json_file} was not found.")
+        logly.error(f"Error: The file {json_file} was not found.")
         return {}
     except json.JSONDecodeError:
-        print(f"Error: Failed to decode JSON from {json_file}.")
+        logly.error(f"Error: Failed to decode JSON from {json_file}.")
         return {}
 
 
