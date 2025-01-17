@@ -21,7 +21,23 @@ def parse_arguments():
     )
     parser.add_argument(
         "--debug",
-        action="store_true",
-        help="Run the app in debug mode"
+        type=bool,
+        choices=[True, False],
+        default=False,
+        help="Run the app in debug mode (default: False)"
+    )
+    parser.add_argument(
+        "--ssr_mode",
+        type=bool,
+        choices=[True, False],
+        default=False,
+        help="Run the app in SSR mode (default: False)"
+    )
+    parser.add_argument(
+        "--logging",
+        type=bool,
+        choices=[True, False],
+        default=True,
+        help="Enable or disable logging (default: True)"
     )
     return parser.parse_args()

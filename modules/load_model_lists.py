@@ -1,24 +1,12 @@
 import json
 import os
-from modules.config import MODELS_JSON_PATH  # If needed, still use this for config-based path
+from modules.config import ConfigManager, config_manager
 from modules.logly import logly
 
-
 def load_models_from_json(json_file=None):
-    """
-    Load the models from the specified JSON file. By default, looks for `models.json`
-    in the current working directory.
-
-    Args:
-    - json_file (str): The path to the JSON file containing the models. If None,
-                        defaults to `models.json` in the current working directory.
-
-    Returns:
-    - dict: The loaded models from the JSON file.
-    """
     if json_file is None:
-        # Use the current working directory and look for models.json
-        json_file = os.path.join(os.getcwd(), MODELS_JSON_PATH)
+        # Get the default path from the config.toml file
+        json_file = config_manager.load_config()["paths"]["models_json_path"]
 
     try:
         with open(json_file, 'r') as file:
@@ -31,16 +19,5 @@ def load_models_from_json(json_file=None):
         logly.error(f"Error: Failed to decode JSON from {json_file}.")
         return {}
 
-
 def get_model_data(models, model_name):
-    """
-    Get the model data from the loaded models.
-
-    Args:
-    - models (dict): The loaded models.
-    - model_name (str): The model name (key).
-
-    Returns:
-    - str: The model's data if found, or a 'not found' message.
-    """
     return models.get(model_name, "Model not found")
