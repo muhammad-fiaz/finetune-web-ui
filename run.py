@@ -10,12 +10,12 @@ def main(args):
 
     # Check if debugging is enabled, either through command line or config file
     debug_mode = args.debug if args.debug is not None else config["project_host"]["debug"]
+    # Check for logging enabled or not
+    logging_enabled = args.logging if args.logging is not None and debug_mode else config["settings"]["logging_enabled"]
 
     # Check for ssr_mode, either through command line or config file
     ssr_mode = args.ssr_mode if args.ssr_mode is not None else config["project_host"]["ssr_mode"]
 
-    # Check for logging enabled or not
-    logging_enabled = args.logging if args.logging is not None and debug_mode else config["settings"]["logging_enabled"]
 
     if debug_mode:
         logly.setLevel("DEBUG")  # Set log level to DEBUG if debugging is enabled

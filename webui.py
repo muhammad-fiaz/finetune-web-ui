@@ -111,7 +111,7 @@ class FineTuneUI:
                             drap_and_drop_model = gr.File(label="Upload Model")
                             file_type=gr.Radio(["zip"],label="File Type")
                     with gr.Row(equal_height=True, elem_id="fine-tune-action-row"):
-                        finetune_progressbar= gr.Textbox(label="Fine-Tune Progress", placeholder="Progress will be displayed here...", interactive=False)
+                        finetune_progressbar= gr.Textbox(label="Progress",  interactive=False)
 
                     with gr.Row(equal_height=True, elem_id="fine-tune-action-row"):
                           finetune_button = gr.Button("Fine-Tune", elem_id="fine-tune-button")
