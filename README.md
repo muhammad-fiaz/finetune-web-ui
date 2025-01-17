@@ -134,6 +134,35 @@ We welcome contributions to `finetune-web-ui`! If you have suggestions, bug fixe
 
 This project is licensed under the AGPL-3.0 License. See the [LICENSE](LICENSE) file for more details.
 
+---
+
+## AI Usage Disclaimer
+
+The **Fine-Tune Web UI** is intended for **research** and **educational purposes** only. It is designed to make fine-tuning large language models (LLMs) like Llama, GPT, etc., easier for developers. By using this tool, you acknowledge that you are solely responsible for how the models are used and the ethical implications of AI-driven applications.
+
+We strongly encourage you to be aware of the potential risks and consequences of AI usage, including but not limited to:
+
+- **Privacy concerns**: The use of sensitive data in training models can lead to privacy violations if not handled responsibly.
+- **Misinformation**: LLMs can generate misleading or harmful content if not properly managed and fine-tuned.
+- **Bias**: Models may contain biases based on the data they are trained on, which can perpetuate harmful stereotypes or unfairness.
+- **Legal implications**: AI-generated content may violate copyright laws or other legal regulations.
+- **Security risks**: AI models can be vulnerable to adversarial attacks or other security threats.
+- **Ethical considerations**: AI applications should be designed and used in a way that respects human rights and ethical principles.
+- **Fairness**: Ensure that your models are fair and unbiased, and do not discriminate against individuals or groups.
+- **Transparency**: Be transparent about how your models are trained, what data they use, and how they make decisions.
+- **Accountability**: Take responsibility for the impact of your models and be prepared to address any issues that arise.
+- **Compliance**: Ensure that your models comply with relevant laws, regulations, and ethical guidelines.
+- **Safety**: Prioritize the safety and well-being of users when deploying AI applications.
+- **Sustainability**: Consider the environmental impact of training large models and optimize resource usage.
+- **Human oversight**: Always have human oversight when deploying AI models to ensure that they are used responsibly.
+- **Continuous monitoring**: Regularly monitor your models for performance, fairness, and ethical concerns.
+- **Feedback mechanisms**: Provide mechanisms for users to report issues or provide feedback on AI-generated content.
+- **Data protection**: Protect user data and ensure that it is used in compliance with data protection laws.
+
+
+Please be responsible and consider the ethical implications when fine-tuning and deploying models.
+
+---
 
 ## Acknowledgments
 
@@ -141,7 +170,7 @@ This project is licensed under the AGPL-3.0 License. See the [LICENSE](LICENSE) 
 - [Hugging Face](https://huggingface.co/) - For pre-trained models and transformers
 - [PyTorch](https://pytorch.org/) - For deep learning framework
 - [Datasets](https://huggingface.co/datasets) - For providing datasets for training
-- [Unsloth](https://github.com/unslothai) - For **FastLanguageModel** and other contributions to the training pipeline
+- [Unsloth](https://github.com/unslothai/unsloth) - For **FastLanguageModel** and other contributions to the training pipeline
 
 
 

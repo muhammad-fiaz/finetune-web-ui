@@ -1,52 +1,56 @@
 import os
 from datasets import load_dataset
-from unsloth import FastLanguageModel
+from modules.logly import logly
 
 
 # Function to download the model
 def download_model(model_name, token=None):
     try:
-        print(f"Downloading model: {model_name}")
-
         # Load model from Hugging Face using optional token for authentication
-        model, tokenizer = FastLanguageModel.from_pretrained(model_name, token=token)
-
-        print(f"Model '{model_name}' downloaded successfully!")
-        return model, tokenizer
+        from unsloth import FastLanguageModel
+        FastLanguageModel.from_pretrained(model_name, token=token)
+        logly.info(f"Model '{model_name}' downloaded successfully!")
+        return f"Model '{model_name}' downloaded successfully!"
 
     except Exception as e:
-        print(f"Error downloading model: {e}")
-        return None, f"Error downloading model: {e}. Please check the Hugging Face API token if required."
+        logly.error(f"Model '{model_name}' download failed: {e}")
+        return f"Error downloading model: {e}. Please check the Hugging Face API token if required."
 
 
 # Function to download the dataset
-def download_dataset(dataset_url):
+def download_dataset(dataset_url, token=None):
     try:
-        print(f"Downloading dataset: {dataset_url}")
-
         # Load dataset from Hugging Face Hub
-        dataset = load_dataset(dataset_url)
-
+        load_dataset(dataset_url, token=token)
+        logly.info(f"Dataset '{dataset_url}' downloaded successfully!")
         # The dataset is automatically cached in the default Hugging Face dataset cache directory
-        print(f"Dataset '{dataset_url}' downloaded successfully!")
-        return dataset
+        return f"Dataset '{dataset_url}' downloaded successfully!"
 
     except Exception as e:
-        print(f"Error downloading dataset: {e}")
+        logly.error(f"Dataset '{dataset_url}' download failed: {e}")
         return f"Error downloading dataset: {e}"
 
 
 # Main function to handle model and dataset downloads
 def main(download_dataset_url=None, download_model_name=None, huggingface_token=None):
-    dataset_response = "No dataset URL provided, skipping dataset download."
-    model_response = "No model name provided, skipping model download."
+    logly.info("Starting main download process.")
+    logly.info(f"Input parameters: Dataset URL={download_dataset_url}, Model Name={download_model_name}, Token Provided={'Yes' if huggingface_token else 'No'}")
+
+    dataset_response = ""
+    model_response = ""
+    token = huggingface_token
 
     # Download dataset if URL is provided
     if download_dataset_url:
-        dataset_response = download_dataset(download_dataset_url)
+        logly.info(f"Attempting to download dataset: {download_dataset_url}")
+        dataset_response = download_dataset(download_dataset_url, token=huggingface_token)
+        logly.info(f"Dataset download response: {dataset_response}")
 
     # Download model if model name is provided
     if download_model_name:
-        model, model_response = download_model(download_model_name, token=huggingface_token)
+        logly.info(f"Attempting to download model: {download_model_name}")
+        model_response = download_model(download_model_name, token=huggingface_token)
+        logly.info(f"Model download response: {model_response}")
 
-    return dataset_response, model_response
+    # Return responses as a tuple of three values
+    return dataset_response, model_response, token
