@@ -5470,7 +5470,7 @@ optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "triton-3.1.0-cp312-cp312-win_amd64.whl", hash = "sha256:89597e7f635b1826098693785d2328bc1587d4cb6a74352437d2c6018c5da40d"},
+    {file = "triton-3.1.0-cp312-cp312-win_amd64.whl", hash = "sha256:1fe3ca9e1db05a0a0609fc0aa0c94c2303ec627a5d5fc6aea84b44f82013e308"},
 ]
 
 [package.dependencies]
@@ -5483,7 +5483,7 @@ tutorials = ["matplotlib", "pandas", "tabulate"]
 
 [package.source]
 type = "url"
-url = "https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp312-cp312-win_amd64.whl"
+url = "https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post8/triton-3.1.0-cp312-cp312-win_amd64.whl"
 
 [[package]]
 name = "trl"
@@ -6330,4 +6330,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "b12363c5db56f4dc088191f53ad0c110639ed844c0750b62ddb60e19dbace2c6"
+content-hash = "b8092d780d8355fa91a6976f70c900ae6edaafbbe67db02b1c1ecf9d85d50e44"
