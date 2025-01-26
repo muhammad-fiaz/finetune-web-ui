@@ -5,7 +5,7 @@
 ---
 > **Note:** This project is currently under development and not yet ready for production use. Feel free to contribute to the project by submitting pull requests, reporting issues, or suggesting new features.
 
-## Features
+## Planned Features
 
 - **Easy Dataset Upload:** Upload your datasets directly from a URL or local files.
 - **Custom Model Fine-tuning:** Select pre-trained models like Llama, GPT, etc., and fine-tune them with your custom datasets.
