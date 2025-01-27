@@ -1,4 +1,6 @@
 import gradio as gr
+
+from cookbook.phi_3_5_mini_conversational import max_seq_length
 from modules.async_worker import AsyncWorker
 from modules.download import main
 from modules.load_datasets_lists import load_datasets_from_json
@@ -55,7 +57,13 @@ class AdvancedOptionsUI:
         """Create the advanced options UI."""
         with gr.Group(visible=False) as advanced_block:
             with gr.Row():
+                max_seq_length = gr.Number(label="Max Sequence Length", value=2048)
+                load_in_4bit = gr.Checkbox(label="Load in 4-bit", value=True)
+
+            with gr.Row():
                 learning_rate = gr.Slider(label="Learning Rate", minimum=0.0001, maximum=0.1, step=0.0001, value=0.001)
+            with gr.Row():
+                trainer_max_seq_length = gr.Number(label="Max Sequence Length", value=2048)
                 batch_size = gr.Number(label="Batch Size", value=32)
                 epochs = gr.Number(label="Epochs", value=10)
                 gradient_accumulation_steps = gr.Number(label="Gradient Accumulation Steps", value=4)
@@ -65,8 +73,23 @@ class AdvancedOptionsUI:
                 lora_alpha = gr.Number(label="LoRA Alpha", value=16)
                 lora_dropout = gr.Number(label="LoRA Dropout", value=0.0)
                 random_state = gr.Number(label="Random State", value=3407)
+                optim=gr.Textbox(label="Optimizer", value="adamw_8bit")
+                weight_decay = gr.Number(label="Weight Decay", value=0.01)
+                lr_scheduler_type = gr.Textbox(label="LR Scheduler Type", value="linear")
+                loftq_config = gr.Textbox(label="LoftQ Config", placeholder="Enter LoftQ Config")
+                use_rslora = gr.Checkbox(label="Use RSLora", value=False)
+                logging_steps=gr.Number(label="Logging Steps", value=1)
+            with gr.Row():
+                target_modules=gr.CheckboxGroup(
+        choices=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+        value=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],  # Default selected values
+        label="Select target modules"
+    )
+
             self.block = advanced_block
             self.options = {
+                "max_seq_length": max_seq_length,
+                "load_in_4bit": load_in_4bit,
                 "learning_rate": learning_rate,
                 "batch_size": batch_size,
                 "epochs": epochs,
@@ -77,6 +100,15 @@ class AdvancedOptionsUI:
                 "lora_alpha": lora_alpha,
                 "lora_dropout": lora_dropout,
                 "random_state": random_state,
+                "loftq_config": loftq_config,
+                "use_rslora": use_rslora,
+                "target_modules": target_modules,
+                "logging_steps": logging_steps,
+                "trainer_max_seq_length": trainer_max_seq_length,
+                "weight_decay": weight_decay,
+                "optim": optim,
+                "lr_scheduler_type": lr_scheduler_type
+
             }
             return advanced_block, self.options
 
@@ -114,24 +146,9 @@ class FineTuneHandler:
             logly.error(f"Error during download: {e}")
             raise
 
-    def start_finetuning(self, dataset_name, model_name, learning_rate, batch_size, epochs, gradient_accumulation_steps,
-                         warmup_steps, max_steps, lora_r, lora_alpha, lora_dropout, random_state):
+    def start_finetuning(self, dataset_name, model_name, advanced_options):
         """Handle the fine-tuning process."""
         logly.info(f"Fine-Tuning Background Process Started!")
-
-        advanced_options = {
-            "learning_rate": learning_rate,
-            "batch_size": batch_size,
-            "epochs": epochs,
-            "gradient_accumulation_steps": gradient_accumulation_steps,
-            "warmup_steps": warmup_steps,
-            "max_steps": max_steps,
-            "lora_r": lora_r,
-            "lora_alpha": lora_alpha,
-            "lora_dropout": lora_dropout,
-            "random_state": random_state,
-        }
-
         finetune_process = self.handler.unsloth_trainer(dataset_name, model_name, advanced_options)
         return finetune_process
 
@@ -180,26 +197,12 @@ class FineTuneUI:
                             refresh_models_button.click(self.handler.reload_models, outputs=model_name)
 
                     finetune_progressbar = gr.Textbox(label="Progress", interactive=False)
+                    advanced_options_checkbox = gr.Checkbox(label="Show Advanced Options", value=False, container=False)
+                    finetune_button = gr.Button("Fine-Tune", elem_id="fine-tune-button")
 
                     advanced_options_ui = AdvancedOptionsUI()
                     advanced_block, advanced_options = advanced_options_ui.create_ui()
 
-                    # Link the checkbox to show/hide advanced options
-                    advanced_options_checkbox = gr.Checkbox(label="Show Advanced Options", value=False, container=False)
-                    advanced_options_checkbox.change(
-                        lambda show: gr.update(visible=show),
-                        inputs=[advanced_options_checkbox],
-                        outputs=[advanced_block]
-                    )
-
-                    finetune_button = gr.Button("Fine-Tune", elem_id="fine-tune-button")
-
-                    # Trigger fine-tuning process
-                    finetune_button.click(
-                        self.handler.start_finetuning,
-                        inputs=[dataset_name, model_name] + list(advanced_options.values()),
-                        outputs=[finetune_progressbar]
-                    )
 
 
                 # Tab 2: Download
@@ -245,11 +248,31 @@ class FineTuneUI:
                             outputs=[]
                         )
 
-                download_button.click(
+
+
+
+
+# all change and click events are below
+        download_button.click(
                     self.handler.handle_download,
                     inputs=[download_dataset, download_model, api_token],
                     outputs=[download_progress]
                 )
+
+                # Link the checkbox to show/hide advanced options
+        advanced_options_checkbox.change(
+                         lambda show: gr.update(visible=show),
+                        inputs=[advanced_options_checkbox],
+                        outputs=[advanced_block]
+                    )
+
+
+                # Trigger fine-tuning process
+        finetune_button.click(
+                        self.handler.start_finetuning,
+                        inputs=[dataset_name, model_name,advanced_options],
+                        outputs=[finetune_progressbar]
+                    )
 
         logly.info("UI started successfully.")
         return demo

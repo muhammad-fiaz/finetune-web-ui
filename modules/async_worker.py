@@ -10,23 +10,23 @@ class AsyncWorker:
         # Load model with parameters
         self.trainer.load_model(
             model_name=model_name,
-            max_seq_length=2048,
+            max_seq_length=advanced_options["max_seq_length"],
             dtype=torch.bfloat16 if is_bfloat16_supported() else torch.float16,
-            load_in_4bit=True,
+            load_in_4bit=advanced_options["load_in_4bit"],
             token=None
         )
 
         # Apply PEFT with parameters
         self.trainer.apply_peft(
             r=advanced_options["lora_r"],
-            target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+            target_modules=advanced_options["target_modules"],
             lora_alpha=advanced_options["lora_alpha"],
             lora_dropout=advanced_options["lora_dropout"],
             bias="none",
             use_gradient_checkpointing="unsloth",
             random_state=advanced_options["random_state"],
-            use_rslora=False,
-            loftq_config=None
+            use_rslora=advanced_options["use_rslora"],
+            loftq_config=advanced_options["loftq_config"]
         )
 
         # Set chat template
@@ -42,18 +42,18 @@ class AsyncWorker:
 
         # Setup trainer with parameters
         self.trainer.setup_trainer(
-            max_seq_length=2048,
+            max_seq_length=advanced_options["trainer_max_seq_length"],
             per_device_train_batch_size=advanced_options["batch_size"],
             gradient_accumulation_steps=advanced_options["gradient_accumulation_steps"],
             warmup_steps=advanced_options["warmup_steps"],
             max_steps=advanced_options["max_steps"],
             learning_rate=advanced_options["learning_rate"],
-            logging_steps=1,
-            optim="adamw_8bit",
-            weight_decay=0.01,
-            lr_scheduler_type="linear",
+            logging_steps=advanced_options["logging_steps"],
+            optim=advanced_options["optim"],
+            weight_decay=advanced_options["weight_decay"],
+            lr_scheduler_type=advanced_options["lr_scheduler_type"],
             seed=advanced_options["random_state"],
-            output_dir="outputs",
+            output_dir="../outputs",
             report_to="none"
         )
 
