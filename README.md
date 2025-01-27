@@ -1,5 +1,7 @@
 <h1 align="center">Finetune Web UI</h1>
 
+![image](https://github.com/user-attachments/assets/2d837faf-a1ef-4028-acdb-c8141c1bb2f7)
+
 **Finetune Web UI** is a user-friendly interface for training and deploying machine learning models, specifically designed for fine-tuning pre-trained models like Llama, GPT, etc. The project aims to streamline the process of model fine-tuning, allowing data scientists and engineers to easily manage their training configurations, datasets, and models through a clean and intuitive web interface.
 
 ---
