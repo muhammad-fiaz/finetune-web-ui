@@ -6,6 +6,46 @@ from modules.load_model_lists import load_models_from_json
 from modules.logly import logly
 
 
+import os
+import toml
+from modules.logly import logly
+from modules.config import ConfigManager
+
+
+class Settings:
+    def __init__(self):
+        self.config_manager = ConfigManager()  # Initialize ConfigManager
+
+    def is_logging_enabled(self):
+        """
+        Check if logging is enabled.
+        Returns:
+            bool: True if logging is enabled, False otherwise.
+        """
+        logging_enabled = self.config_manager.get_config_value("settings", "logging_enabled")
+        logly.info(f"Logging enabled status: {logging_enabled}")
+        return logging_enabled
+
+    def set_logging_enabled(self, enabled):
+        """
+        Set the logging enabled status.
+        Args:
+            enabled (bool): True to enable logging, False to disable it.
+        """
+        self.config_manager.update_config("settings", "logging_enabled", enabled)
+        status = "enabled" if enabled else "disabled"
+        logly.info(f"Logging has been {status} successfully.")
+
+    def toggle_logging(self):
+        """
+        Toggle the logging enabled status.
+        """
+        current_status = self.is_logging_enabled()
+        self.set_logging_enabled(not current_status)
+        new_status = "enabled" if not current_status else "disabled"
+        logly.info(f"Logging toggled to {new_status}.")
+
+
 class AdvancedOptionsUI:
     def __init__(self):
         self.block = None
@@ -100,8 +140,11 @@ class FineTuneHandler:
 class FineTuneUI:
     def __init__(self, handler):
         self.handler = handler
+        self.settings = Settings()
 
     def create_ui(self):
+        logging_enabled = self.settings.is_logging_enabled()
+
         """Create and return the Gradio UI."""
         with gr.Blocks(css="footer {visibility: hidden;}",title="Finetune WebUI") as demo:
             gr.Markdown("""
@@ -185,12 +228,22 @@ class FineTuneUI:
 
                 # Tab 3: Settings
                 with gr.Tab("Settings"):
-                    gr.Markdown("<h2 style='text-align: center;'>Fine-tuning settings for the model</h2>")
-                    with gr.Row(equal_height=True):
-                        api_token = gr.Textbox(label="API Token", placeholder="Enter your Hugging Face API Token")
-                    with gr.Row(equal_height=True):
-                        gr.Checkbox(label="Enable Logging", value=True)
-                        gr.Checkbox(label="Save Logs", value=True)
+                        gr.Markdown("<h2 style='text-align: center;'>Fine-tuning settings for the model</h2>")
+                        with gr.Row(equal_height=True):
+                            api_token = gr.Textbox(label="API Token", placeholder="Enter your Hugging Face API Token")
+                        with gr.Row(equal_height=True):
+                            enable_logging_checkbox = gr.Checkbox(
+                                label="Enable Logging",
+                                value=logging_enabled,
+                                interactive=True
+                            )
+
+                        # Save the updated value of logging_enabled
+                        enable_logging_checkbox.change(
+                            lambda value: self.settings.set_logging_enabled(value),
+                            inputs=[enable_logging_checkbox],
+                            outputs=[]
+                        )
 
                 download_button.click(
                     self.handler.handle_download,
