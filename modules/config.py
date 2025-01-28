@@ -1,14 +1,11 @@
 import toml
 import os
-
 from modules.logly import logly
 
 
 class ConfigManager:
-    # Dynamically set the config file path to the root of the project
     CONFIG_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../config.toml")
 
-    # Default config settings with categorized sections
     default_config = {
         "project_host": {
             "host": "127.0.0.1",
@@ -17,24 +14,26 @@ class ConfigManager:
             "ssr_mode": False,
         },
         "paths": {
-            "models_json_path": "configs/models.json",  # Path to models JSON
-            "datasets_json_path": "configs/datasets.json",  # Path to datasets JSON
+            "models_json_path": "configs/models.json",
+            "datasets_json_path": "configs/datasets.json",
         },
         "project_name": {
-            "name": "FineTuneWebUI",  # The project name
-            "version": "0.0.0",  # The project version
+            "name": "FineTuneWebUI",
+            "version": "0.0.0",
         },
         "settings": {
-            "logging_enabled": True,  # Enable or disable logging
-        }
+            "logging_enabled": True,
+        },
+        "huggingface": {
+            "api_token": "",  # Default token is empty
+        },
     }
 
     def __init__(self):
-        # Ensure the config file exists when the class is instantiated
         self.create_config()
 
     def create_config(self):
-        """Create a new config.toml file with default settings."""
+        """Create a new config.toml file with default settings if it doesn't exist."""
         if not os.path.exists(self.CONFIG_FILE_PATH):
             with open(self.CONFIG_FILE_PATH, "w") as config_file:
                 toml.dump(self.default_config, config_file)

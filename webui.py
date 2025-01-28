@@ -41,6 +41,18 @@ class Settings:
         logly.info(f"Logging toggled to {new_status}.")
 
 
+class Export:
+    def __init__(self):
+        self.block = None
+        self.options = None
+
+    def create_ui(self):
+        """Create the export UI."""
+        with gr.Group() as export_block:
+            pass
+
+
+
 class AdvancedOptionsUI:
     def __init__(self):
         self.block = None
@@ -50,35 +62,38 @@ class AdvancedOptionsUI:
         """Create the advanced options UI."""
         with gr.Group(visible=False) as advanced_block:
             with gr.Row():
-                max_seq_length = gr.Number(label="Max Sequence Length", value=2048)
-                load_in_4bit = gr.Checkbox(label="Load in 4-bit", value=True)
-
+                max_seq_length = gr.Slider(label="Max Sequence Length", minimum=1,maximum=342733, value=2048, info="Set the maximum sequence length.")
             with gr.Row():
-                learning_rate = gr.Slider(label="Learning Rate", minimum=0.0001, maximum=0.1, step=0.0001, value=0.001)
+                load_in_4bit = gr.Checkbox(label="Load in 4-bit", value=True, info="Enable loading the model in 4-bit precision to save memory.")
             with gr.Row():
-                trainer_max_seq_length = gr.Number(label="Max Sequence Length", value=2048)
-                batch_size = gr.Number(label="Batch Size", value=32)
-                epochs = gr.Number(label="Epochs", value=10)
-                gradient_accumulation_steps = gr.Number(label="Gradient Accumulation Steps", value=4)
-                warmup_steps = gr.Number(label="Warmup Steps", value=5)
-                max_steps = gr.Number(label="Max Steps", value=60)
-                lora_r = gr.Number(label="LoRA r", value=16)
-                lora_alpha = gr.Number(label="LoRA Alpha", value=16)
-                lora_dropout = gr.Number(label="LoRA Dropout", value=0.0)
-                random_state = gr.Number(label="Random State", value=3407)
-                optim = gr.Textbox(label="Optimizer", value="adamw_8bit")
-                weight_decay = gr.Number(label="Weight Decay", value=0.01)
-                lr_scheduler_type = gr.Textbox(label="LR Scheduler Type", value="linear")
-                loftq_config = gr.Textbox(label="LoftQ Config", placeholder="Enter LoftQ Config")
-                use_rslora = gr.Checkbox(label="Use RSLora", value=False)
-                logging_steps = gr.Number(label="Logging Steps", value=1)
+                learning_rate = gr.Slider(label="Learning Rate", minimum=0.0001, maximum=0.1, step=0.0001, value=0.001, info="Adjust the learning rate for training.")
+            with gr.Row():
+                trainer_max_seq_length = gr.Number(label="Max Sequence Length", value=2048, info="Set the maximum sequence length for the trainer.")
+                batch_size = gr.Number(label="Batch Size", value=32, info="Specify the number of samples per batch.")
+                epochs = gr.Number(label="Epochs", value=10, info="Set the number of training epochs.")
+                gradient_accumulation_steps = gr.Number(label="Gradient Accumulation Steps", value=4, info="Number of gradient accumulation steps.")
+                warmup_steps = gr.Number(label="Warmup Steps", value=5, info="Number of warmup steps during training.")
+                max_steps = gr.Number(label="Max Steps", value=60, info="Set the maximum number of training steps.")
+                lora_r = gr.Number(label="LoRA r", value=16, info="LoRA hyperparameter r value.")
+                lora_alpha = gr.Number(label="LoRA Alpha", value=16, info="LoRA alpha value.")
+                lora_dropout = gr.Number(label="LoRA Dropout", value=0.0, info="LoRA dropout rate.")
+                random_state = gr.Number(label="Random State", value=3407, info="Set the random state for reproducibility.")
+                optim = gr.Textbox(label="Optimizer", value="adamw_8bit", info="Specify the optimizer to use (e.g., AdamW).")
+                weight_decay = gr.Number(label="Weight Decay", value=0.01, info="Set the weight decay for regularization.")
+                lr_scheduler_type = gr.Textbox(label="LR Scheduler Type", value="linear", info="Specify the type of learning rate scheduler (e.g., linear).")
+                loftq_config = gr.Textbox(label="LoftQ Config", placeholder="Enter LoftQ Config", info="Provide the configuration for LoftQ.")
+                use_rslora = gr.Checkbox(label="Use RSLora", value=False, info="Enable or disable the use of RSLora.")
+                logging_steps = gr.Number(label="Logging Steps", value=1, info="Specify the number of steps between logging updates.")
             with gr.Row():
                 target_modules = gr.CheckboxGroup(
                     choices=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
                     value=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
-                    # Default selected values
-                    label="Select target modules"
+                    label="Select target modules",
+                    info="Select the target modules to be fine-tuned."
                 )
+            with gr.Row(equal_height=True):
+                    output_dir = gr.Textbox(label="Output Directories", placeholder="Enter the output directories",
+                                             info="Specify the folder where models need to be placed!", value="../outputs")
 
             self.block = advanced_block
             self.options = {
@@ -101,7 +116,8 @@ class AdvancedOptionsUI:
                 "trainer_max_seq_length": trainer_max_seq_length,
                 "weight_decay": weight_decay,
                 "optim": optim,
-                "lr_scheduler_type": lr_scheduler_type
+                "lr_scheduler_type": lr_scheduler_type,
+                "output_dir": output_dir
             }
             return advanced_block, self.options
 
@@ -142,7 +158,7 @@ class FineTuneHandler:
     def start_finetuning(self, dataset_name, model_name, max_seq_length, load_in_4bit, learning_rate, batch_size,
                          epochs, gradient_accumulation_steps, warmup_steps, max_steps, lora_r, lora_alpha,
                          lora_dropout, random_state, loftq_config, use_rslora, target_modules, logging_steps,
-                         trainer_max_seq_length, weight_decay, optim, lr_scheduler_type):
+                         trainer_max_seq_length, weight_decay, optim, lr_scheduler_type, output_dir):
         """Handle the fine-tuning process."""
         logly.info(f"Fine-Tuning Background Process Started!")
 
@@ -166,7 +182,9 @@ class FineTuneHandler:
             "trainer_max_seq_length": trainer_max_seq_length,
             "weight_decay": weight_decay,
             "optim": optim,
-            "lr_scheduler_type": lr_scheduler_type
+            "lr_scheduler_type": lr_scheduler_type,
+            "output_dir": output_dir
+
         }
 
         finetune_process = self.handler.unsloth_trainer(dataset_name, model_name, advanced_options)
@@ -194,30 +212,30 @@ class FineTuneUI:
                     with gr.Row(equal_height=True, elem_id="main-row"):
                         # Left Column
                         with gr.Column(elem_id="left-column"):
-                            gr.Markdown("Select the Dataset you want to fine-tune the model with.")
                             dataset_name = gr.Dropdown(
                                 choices=list(self.handler.datasets.keys()),
                                 label="Dataset Name",
                                 value=list(self.handler.datasets.keys())[0],
-                                interactive=True
+                                interactive=True,
+                                info="Select the dataset you want to fine-tune the model with."
                             )
                             refresh_datasets_button = gr.Button("Refresh Datasets", elem_id="refresh-datasets-button")
                             refresh_datasets_button.click(self.handler.reload_datasets, outputs=dataset_name)
 
                         # Right Column
                         with gr.Column(elem_id="right-column"):
-                            gr.Markdown("Select the model you want to fine-tune.")
                             model_name = gr.Dropdown(
                                 choices=list(self.handler.models.keys()),
                                 label="Model Name",
                                 value=list(self.handler.models.keys())[0],
-                                interactive=True
+                                interactive=True,
+                                info="Select the model you want to fine-tune."
                             )
                             refresh_models_button = gr.Button("Refresh Models", elem_id="refresh-models-button")
                             refresh_models_button.click(self.handler.reload_models, outputs=model_name)
 
-                    finetune_progressbar = gr.Textbox(label="Progress", interactive=False)
-                    advanced_options_checkbox = gr.Checkbox(label="Show Advanced Options", value=False, container=False)
+                    finetune_progressbar = gr.Textbox(label="Progress", interactive=False, info="Displays the progress of the fine-tuning process.")
+                    advanced_options_checkbox = gr.Checkbox(label="Show Advanced Options", value=False, container=False, info="Toggle to show or hide advanced fine-tuning options.")
                     finetune_button = gr.Button("Fine-Tune", elem_id="fine-tune-button")
 
                     advanced_options_ui = AdvancedOptionsUI()
@@ -241,37 +259,41 @@ class FineTuneUI:
                 with gr.Tab("Download"):
                     with gr.Row(equal_height=True, elem_id="download-row"):
                         with gr.Column(elem_id="left-column"):
-                            gr.Markdown("Enter the dataset URL to download.")
                             download_dataset = gr.Textbox(
                                 label="Dataset URL",
-                                placeholder="Enter the dataset URL (e.g., mlabonne/FineTome-100k)"
+                                placeholder="Enter the dataset URL (e.g., mlabonne/FineTome-100k)",
+                                info="Provide the URL of the dataset you want to download."
                             )
                         with gr.Column(elem_id="right-column"):
-                            gr.Markdown("Enter the model name to download.")
                             download_model = gr.Textbox(
                                 label="Model Name",
-                                placeholder="Enter the model name (e.g., mlabonne/FineTome-100k)"
+                                placeholder="Enter the model name (e.g., mlabonne/FineTome-100k)",
+                                info="Provide the name of the model you want to download."
                             )
                     with gr.Row(equal_height=True, elem_id="download-action-row"):
                         download_progress = gr.Textbox(
                             label="Download Progress",
                             placeholder="Progress will be displayed here...",
-                            interactive=False
+                            interactive=False,
+                            info="Displays the progress of the download process."
                         )
                     download_button = gr.Button("Download", elem_id="download-button")
+                # Tab 3: Export
+                with gr.Tab("Export"):
+                     with gr.Row(equal_height=True):
+                            export_model_ui=Export()
+                            export_model_ui.create_ui()
 
-
-
-                # Tab 3: Settings
+                # Tab 4: Settings
                 with gr.Tab("Settings"):
-                    gr.Markdown("<h2 style='text-align: center;'>Fine-tuning settings for the model</h2>")
                     with gr.Row(equal_height=True):
-                        api_token = gr.Textbox(label="API Token", placeholder="Enter your Hugging Face API Token")
+                        api_token = gr.Textbox(label="API Token", placeholder="Enter your Hugging Face API Token", info="Enter your Hugging Face API token for authentication.")
                     with gr.Row(equal_height=True):
                         enable_logging_checkbox = gr.Checkbox(
                             label="Enable Logging",
                             value=logging_enabled,
-                            interactive=True
+                            interactive=True,
+                            info="Toggle to enable or disable logging of operations."
                         )
 
                     # Save the updated value of logging_enabled

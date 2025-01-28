@@ -53,7 +53,7 @@ class AsyncWorker:
             weight_decay=advanced_options["weight_decay"],
             lr_scheduler_type=advanced_options["lr_scheduler_type"],
             seed=advanced_options["random_state"],
-            output_dir="../outputs",
+            output_dir=advanced_options["output_dirs"],
             report_to="none"
         )
 
@@ -81,3 +81,8 @@ class AsyncWorker:
         self.trainer.save_model(save_path="lora_model")
 
         return "Fine-tuning completed successfully!"
+
+    def export_model(self, model_name, advanced_options):
+
+
+         return "Model exported successfully!"
