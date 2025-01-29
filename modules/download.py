@@ -3,7 +3,6 @@ from datasets import load_dataset
 from modules.config import config_manager
 from modules.logly import logly
 
-
 # Function to download the model
 def download_model(model_name, token=None):
     try:

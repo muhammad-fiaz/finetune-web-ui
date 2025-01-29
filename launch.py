@@ -1,6 +1,7 @@
 from modules.config import ConfigManager, config_manager
 from modules.logly import logly
-from webui import FineTuneHandler, FineTuneUI
+from ui.components.FineTuneHandler import FineTuneHandler
+from webui import  FineTuneUI
 from modules.arguments import parse_arguments
 
 

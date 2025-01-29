@@ -14,7 +14,7 @@ Before proceeding, make sure you have the following installed on your machine:
 The project includes two Dockerfiles for building Docker images based on different dependency management systems:
 
 - **`pip.Dockerfile`**: Dockerfile for pip-based dependency management (using `requirements.txt`).
-- **`poetry.Dockerfile`**: Dockerfile for Poetry-based dependency management (using `pyproject.toml` and `poetry.lock`).
+- **`uv.Dockerfile`**: Dockerfile for Poetry-based dependency management (using `pyproject.toml` and `uv.lock`).
 
 You can choose the appropriate Dockerfile depending on your preference for managing dependencies.
 
@@ -36,18 +36,18 @@ If you're using **pip** and have a `requirements.txt` file, follow these steps:
 
 This will start the **Finetune Web UI** and expose it on port `7860` by default.
 
-### 2. **For Poetry-based Project**:
+### 2. **For UV-based Project**:
 
-If you're using **Poetry** for dependency management, and have `pyproject.toml` and `poetry.lock`, follow these steps:
+If you're using **uv** for dependency management, and have `pyproject.toml` and `uv.lock`, follow these steps:
 
 1. **Build the Docker image**:
    ```bash
-   docker build -t finetune-web-ui-poetry -f poetry.Dockerfile .
+   docker build -t finetune-web-ui-poetry -f uv.Dockerfile .
    ```
 
 2. **Run the Docker container**:
    ```bash
-   docker run -p 7860:7860 finetune-web-ui-poetry
+   docker run -p 7860:7860 finetune-web-ui-UV
    ```
 
 This will also start the **Finetune Web UI** and expose it on port `7860`.
@@ -60,16 +60,16 @@ If you'd like to use Docker Compose for managing the application, you can create
 version: '3'
 
 services:
-  finetune-web-ui:
-    build:
-      context: .
-      dockerfile: poetry.Dockerfile  # Change this to 'pip.Dockerfile' for pip-based setup
-    ports:
-      - "7860:7860"
-    volumes:
-      - .:/app
-    environment:
-      - ENV=production
+   finetune-web-ui:
+      build:
+         context: .
+         dockerfile: uv.Dockerfile  # Change this to 'pip.Dockerfile' for pip-based setup
+      ports:
+         - "7860:7860"
+      volumes:
+         - .:/app
+      environment:
+         - ENV=production
 ```
 
 To build and run the container with Docker Compose:
@@ -110,12 +110,12 @@ Here’s a summary of the project structure:
 
 ```bash
 finetune-web-ui/
-├── run.py                # Main application script to run the UI
+├── launch.py                # Main application script to run the UI
 ├── pip.Dockerfile        # Dockerfile for pip-based dependency management
-├── poetry.Dockerfile     # Dockerfile for Poetry-based dependency management
+├── uv.Dockerfile     # Dockerfile for uv-based dependency management
 ├── requirements.txt      # List of dependencies (if pip isn't used)
-├── pyproject.toml        # Poetry project configuration (if using Poetry)
-├── poetry.lock           # Poetry lock file (if using Poetry)
+├── pyproject.toml        # python project configuration
+├── uv.lock           # uv lock file
 ├── .dockerignore         # Docker ignore file
 ├── README.md             # Project documentation
 ├── docker_README.md      # Docker usage documentation
