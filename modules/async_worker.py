@@ -4,6 +4,10 @@ from modules.finetune.unsloth import UnslothTrainer
 
 class AsyncWorker:
     def __init__(self):
+        # Clear GPU memory at the start
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            print("Cleared GPU cache at start of application.")
         self.trainer = UnslothTrainer()
 
     def unsloth_trainer(self, dataset_name, model_name, advanced_options):
@@ -11,7 +15,7 @@ class AsyncWorker:
         self.trainer.load_model(
             model_name=model_name,
             max_seq_length=advanced_options["max_seq_length"],
-            dtype=torch.bfloat16 if is_bfloat16_supported() else torch.float16,
+            dtype=None,
             load_in_4bit=advanced_options["load_in_4bit"],
             token=None
         )
@@ -29,15 +33,21 @@ class AsyncWorker:
             loftq_config=advanced_options["loftq_config"]
         )
 
+
         # Set chat template
-        self.trainer.set_chat_template(chat_template="llama-3.1")
+        self.trainer.set_chat_template(chat_template=advanced_options["set_chat_template"],
+                                       mapping={"role": "role", "content": "content", "user": "user", "assistant": "assistant"},
+                                       system_message=None,
+                                       map_eos_token=advanced_options["map_eos_token"])
+
+
 
         # Load dataset with parameters
         self.trainer.load_dataset(
             dataset_name=dataset_name,
-            split="train",
-            dataset_num_proc=1,
-            packing=False
+            split=advanced_options["dataset_split"],
+            dataset_num_proc=advanced_options["dataset_num_proc"],
+            packing=advanced_options["dataset_packing"],
         )
 
         # Setup trainer with parameters
@@ -53,14 +63,14 @@ class AsyncWorker:
             weight_decay=advanced_options["weight_decay"],
             lr_scheduler_type=advanced_options["lr_scheduler_type"],
             seed=advanced_options["random_state"],
-            output_dir=advanced_options["output_dirs"],
-            report_to="none"
+            output_dir=advanced_options["output_dir"],
+            report_to=advanced_options["train_report_to"],
         )
 
         # Train on responses only
         self.trainer.train_on_responses_only(
-            instruction_part="<|start_header_id|>user<|end_header_id|>\n\n",
-            response_part="<|start_header_id|>assistant<|end_header_id|>\n\n"
+            instruction_part=advanced_options["instruction_part"],
+            response_part=advanced_options["response_part"],
         )
 
         # Show memory stats before training

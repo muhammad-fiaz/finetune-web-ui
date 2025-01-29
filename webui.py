@@ -84,6 +84,11 @@ class AdvancedOptionsUI:
                 loftq_config = gr.Textbox(label="LoftQ Config", placeholder="Enter LoftQ Config", info="Provide the configuration for LoftQ.")
                 use_rslora = gr.Checkbox(label="Use RSLora", value=False, info="Enable or disable the use of RSLora.")
                 logging_steps = gr.Number(label="Logging Steps", value=1, info="Specify the number of steps between logging updates.")
+                dataset_split=gr.Textbox(label="Dataset Split", value="train", info="Specify the dataset split to use.")
+                dataset_num_proc=gr.Number(label="Dataset Num Proc", value=1, info="Specify the number of processes to use for the dataset.")
+                dataset_packing=gr.Checkbox(label="Dataset Packing", value=False, info="Enable or disable dataset packing.")
+                use_gradient_checkpointing=gr.Dropdown(label="Use Gradient Checkpointing", choices=["unsloth", "True"], value="unsloth", info="Select the gradient checkpointing method.")
+                map_eos_token=gr.Checkbox(label="Map EOS Token", value=False, info="Enable or disable mapping the EOS token.")
             with gr.Row():
                 target_modules = gr.CheckboxGroup(
                     choices=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
@@ -91,9 +96,18 @@ class AdvancedOptionsUI:
                     label="Select target modules",
                     info="Select the target modules to be fine-tuned."
                 )
+
             with gr.Row(equal_height=True):
+                    train_report_to = gr.Textbox(label="Training Report To", value="none", info="Specify the report destination for training.")
                     output_dir = gr.Textbox(label="Output Directories", placeholder="Enter the output directories",
                                              info="Specify the folder where models need to be placed!", value="../outputs")
+            with gr.Row(equal_height=True):
+                set_chat_template = gr.Textbox(label="Set Chat Template", value="llama-3.1", info="Set the chat template for the tokenizer.")
+                mapping_template=gr.Textbox(label="Mapping Template", info="Set the mapping template for training.")
+
+            with gr.Row(equal_height=True):
+                instruction_part=gr.Textbox(label="Instruction Part", value="<|start_header_id|>user<|end_header_id|>\n\n", info="Set the instruction part for training.")
+                response_part=gr.Textbox(label="Response Part", value="<|start_header_id|>assistant<|end_header_id|>\n\n", info="Set the response part for training.")
 
             self.block = advanced_block
             self.options = {
@@ -117,7 +131,17 @@ class AdvancedOptionsUI:
                 "weight_decay": weight_decay,
                 "optim": optim,
                 "lr_scheduler_type": lr_scheduler_type,
-                "output_dir": output_dir
+                "output_dir": output_dir,
+                "dataset_split": dataset_split,
+                "dataset_num_proc": dataset_num_proc,
+                "dataset_packing": dataset_packing,
+                "train_report_to": train_report_to,
+                "set_chat_template": set_chat_template,
+                "instruction_part": instruction_part,
+                "response_part": response_part,
+                "use_gradient_checkpointing": use_gradient_checkpointing,
+                "map_eos_token": map_eos_token,
+                "mapping_template": mapping_template,
             }
             return advanced_block, self.options
 
@@ -158,7 +182,8 @@ class FineTuneHandler:
     def start_finetuning(self, dataset_name, model_name, max_seq_length, load_in_4bit, learning_rate, batch_size,
                          epochs, gradient_accumulation_steps, warmup_steps, max_steps, lora_r, lora_alpha,
                          lora_dropout, random_state, loftq_config, use_rslora, target_modules, logging_steps,
-                         trainer_max_seq_length, weight_decay, optim, lr_scheduler_type, output_dir):
+                         trainer_max_seq_length, weight_decay, optim, lr_scheduler_type, output_dir, dataset_split, dataset_num_proc, dataset_packing, train_report_to,
+                         set_chat_template, instruction_part, response_part, use_gradient_checkpointing, map_eos_token, mapping_template):
         """Handle the fine-tuning process."""
         logly.info(f"Fine-Tuning Background Process Started!")
 
@@ -183,7 +208,17 @@ class FineTuneHandler:
             "weight_decay": weight_decay,
             "optim": optim,
             "lr_scheduler_type": lr_scheduler_type,
-            "output_dir": output_dir
+            "output_dir": output_dir,
+            "dataset_split": dataset_split,
+            "dataset_num_proc": dataset_num_proc,
+            "dataset_packing": dataset_packing,
+            "train_report_to": train_report_to,
+            "set_chat_template": set_chat_template,
+            "instruction_part": instruction_part,
+            "response_part": response_part,
+            "use_gradient_checkpointing": use_gradient_checkpointing,
+            "map_eos_token": map_eos_token,
+            "mapping_template": mapping_template,
 
         }
 
