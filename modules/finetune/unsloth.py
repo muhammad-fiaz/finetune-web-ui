@@ -1,3 +1,5 @@
+from torch.utils.hipify.hipify_python import mapping
+
 from unsloth import FastLanguageModel, is_bfloat16_supported
 from datasets import load_dataset
 from unsloth.chat_templates import get_chat_template, standardize_sharegpt, train_on_responses_only
@@ -49,13 +51,17 @@ class UnslothTrainer:
             loftq_config=loftq_config,
         )
 
-    def set_chat_template(self, chat_template="llama-3.1"):
+
+    def set_chat_template(self, chat_template="llama-3.1", mapping={"role" : "role", "content" : "content", "user" : "user", "assistant" : "assistant"},map_eos_token = False,    system_message = None):
         """
         Set the chat template for the tokenizer.
         """
         self.tokenizer = get_chat_template(
             self.tokenizer,
-            chat_template=chat_template
+            chat_template=chat_template,
+            system_message=system_message,
+            mapping=mapping,
+            map_eos_token=map_eos_token,
         )
 
     def format_prompts(self, examples):

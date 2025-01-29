@@ -54,14 +54,14 @@ pip install -r requirements.txt
 This will install all the necessary dependencies.
 
 
-### Step 2.2: Install Dependencies with Poetry
+### Step 2.2: Install Dependencies with UV
 
 If you don't have Poetry installed, follow the [Poetry installation guide](https://python-poetry.org/docs/#installation).
 
 Once Poetry is installed, run:
 
 ```bash
-poetry install
+uv lock
 ```
 
 This will create a virtual environment and install all the necessary dependencies.
@@ -70,8 +70,10 @@ This will create a virtual environment and install all the necessary dependencie
 
 Activate the environment:
 
+> this following command will automatically create env and install dependencies the launch the app
+
 ```bash
-poetry shell
+uv run launch.py 
 ```
 
 Alternatively, you can activate the virtual environment using the `.venv` folder if you're using one:
@@ -86,7 +88,7 @@ source .venv/bin/activate  # For Linux/MacOS
 Run the following command to start the web interface:
 
 ```bash
-python run.py
+python launch.py
 ```
 
 This will launch the web UI, typically accessible at `http://localhost:7860`.
@@ -107,7 +109,7 @@ This will launch the web UI, typically accessible at `http://localhost:7860`.
 
 ```bash
 finetune-web-ui/
-├── run.py                # Main application script to run the UI
+├── launch.py                # Main application script to run the UI
 ├── requirements.txt      # List of dependencies (if Poetry isn't used)
 ├── .venv/                # Virtual environment directory
 ├── README.md             # Project documentation
