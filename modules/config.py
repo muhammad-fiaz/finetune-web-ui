@@ -4,7 +4,9 @@ from modules.logly import logly
 
 
 class ConfigManager:
-    CONFIG_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../config.toml")
+    CONFIG_FILE_PATH = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "../config.toml"
+    )
 
     default_config = {
         "project_host": {
@@ -57,7 +59,9 @@ class ConfigManager:
             config[section][key] = value
             with open(self.CONFIG_FILE_PATH, "w") as config_file:
                 toml.dump(config, config_file)
-            logly.info(f"Updated {section} -> {key} to {value} in {self.CONFIG_FILE_PATH}")
+            logly.info(
+                f"Updated {section} -> {key} to {value} in {self.CONFIG_FILE_PATH}"
+            )
         else:
             logly.error(f"Section {section} not found in config.")
 

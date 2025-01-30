@@ -2,6 +2,7 @@ import torch
 from unsloth import is_bfloat16_supported
 from modules.finetune.unsloth import UnslothTrainer
 
+
 class AsyncWorker:
     def __init__(self):
         # Clear GPU memory at the start
@@ -17,7 +18,7 @@ class AsyncWorker:
             max_seq_length=advanced_options["max_seq_length"],
             dtype=None,
             load_in_4bit=advanced_options["load_in_4bit"],
-            token=None
+            token=None,
         )
 
         # Apply PEFT with parameters
@@ -30,17 +31,21 @@ class AsyncWorker:
             use_gradient_checkpointing="unsloth",
             random_state=advanced_options["random_state"],
             use_rslora=advanced_options["use_rslora"],
-            loftq_config=advanced_options["loftq_config"]
+            loftq_config=advanced_options["loftq_config"],
         )
 
-
         # Set chat template
-        self.trainer.set_chat_template(chat_template=advanced_options["set_chat_template"],
-                                       mapping={"role": "role", "content": "content", "user": "user", "assistant": "assistant"},
-                                       system_message=None,
-                                       map_eos_token=advanced_options["map_eos_token"])
-
-
+        self.trainer.set_chat_template(
+            chat_template=advanced_options["set_chat_template"],
+            mapping={
+                "role": "role",
+                "content": "content",
+                "user": "user",
+                "assistant": "assistant",
+            },
+            system_message=None,
+            map_eos_token=advanced_options["map_eos_token"],
+        )
 
         # Load dataset with parameters
         self.trainer.load_dataset(
@@ -83,7 +88,12 @@ class AsyncWorker:
         self.trainer.show_final_memory_and_time_stats(trainer_stats.metrics)
 
         # Inference example
-        messages = [{"role": "user", "content": "Continue the Fibonacci sequence: 1, 1, 2, 3, 5, 8,"}]
+        messages = [
+            {
+                "role": "user",
+                "content": "Continue the Fibonacci sequence: 1, 1, 2, 3, 5, 8,",
+            }
+        ]
         print(self.trainer.inference(messages))
         # Inference stream example
         self.trainer.inference_stream(messages)
@@ -93,6 +103,4 @@ class AsyncWorker:
         return "Fine-tuning completed successfully!"
 
     def export_model(self, model_name, advanced_options):
-
-
-         return "Model exported successfully!"
+        return "Model exported successfully!"

@@ -1,4 +1,3 @@
-
 from modules.config import ConfigManager
 from modules.logly import logly
 
@@ -13,7 +12,9 @@ class Settings:
         Returns:
             bool: True if logging is enabled, False otherwise.
         """
-        logging_enabled = self.config_manager.get_config_value("settings", "logging_enabled")
+        logging_enabled = self.config_manager.get_config_value(
+            "settings", "logging_enabled"
+        )
         logly.info(f"Logging enabled status: {logging_enabled}")
         return logging_enabled
 
@@ -35,5 +36,3 @@ class Settings:
         self.set_logging_enabled(not current_status)
         new_status = "enabled" if not current_status else "disabled"
         logly.info(f"Logging toggled to {new_status}.")
-
-

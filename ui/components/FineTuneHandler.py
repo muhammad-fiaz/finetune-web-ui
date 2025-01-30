@@ -18,19 +18,25 @@ class FineTuneHandler:
         logly.info("Reloading datasets from JSON")
         self.datasets = load_datasets_from_json()
         logly.info("Reloaded datasets from JSON successfully")
-        return gr.update(choices=list(self.datasets.keys()), value=list(self.datasets.keys())[0])
+        return gr.update(
+            choices=list(self.datasets.keys()), value=list(self.datasets.keys())[0]
+        )
 
     def reload_models(self):
         """Reload models from JSON."""
         logly.info("Reloading models from JSON")
         self.models = load_models_from_json()
         logly.info("Reloaded models from JSON successfully")
-        return gr.update(choices=list(self.models.keys()), value=list(self.models.keys())[0])
+        return gr.update(
+            choices=list(self.models.keys()), value=list(self.models.keys())[0]
+        )
 
     def handle_download(self, dataset_url, model_name, token):
         """Handle the download process."""
         logly.info("Initiating download process")
-        logly.info(f"Dataset URL: {dataset_url}, Model Name: {model_name}, Token Provided: {'Yes' if token else 'No'}")
+        logly.info(
+            f"Dataset URL: {dataset_url}, Model Name: {model_name}, Token Provided: {'Yes' if token else 'No'}"
+        )
         try:
             dataset_result, model_result, token = main(dataset_url, model_name, token)
             logly.info("Download process completed successfully")
@@ -39,11 +45,42 @@ class FineTuneHandler:
             logly.error(f"Error during download: {e}")
             raise
 
-    def start_finetuning(self, dataset_name, model_name, max_seq_length, load_in_4bit, learning_rate, batch_size,
-                         epochs, gradient_accumulation_steps, warmup_steps, max_steps, lora_r, lora_alpha,
-                         lora_dropout, random_state, loftq_config, use_rslora, target_modules, logging_steps,
-                         trainer_max_seq_length, weight_decay, optim, lr_scheduler_type, output_dir, dataset_split, dataset_num_proc, dataset_packing, train_report_to,
-                         set_chat_template, instruction_part, response_part, use_gradient_checkpointing, map_eos_token, mapping_template):
+    def start_finetuning(
+        self,
+        dataset_name,
+        model_name,
+        max_seq_length,
+        load_in_4bit,
+        learning_rate,
+        batch_size,
+        epochs,
+        gradient_accumulation_steps,
+        warmup_steps,
+        max_steps,
+        lora_r,
+        lora_alpha,
+        lora_dropout,
+        random_state,
+        loftq_config,
+        use_rslora,
+        target_modules,
+        logging_steps,
+        trainer_max_seq_length,
+        weight_decay,
+        optim,
+        lr_scheduler_type,
+        output_dir,
+        dataset_split,
+        dataset_num_proc,
+        dataset_packing,
+        train_report_to,
+        set_chat_template,
+        instruction_part,
+        response_part,
+        use_gradient_checkpointing,
+        map_eos_token,
+        mapping_template,
+    ):
         """Handle the fine-tuning process."""
         logly.info(f"Fine-Tuning Background Process Started!")
 
@@ -79,8 +116,9 @@ class FineTuneHandler:
             "use_gradient_checkpointing": use_gradient_checkpointing,
             "map_eos_token": map_eos_token,
             "mapping_template": mapping_template,
-
         }
 
-        finetune_process = self.handler.unsloth_trainer(dataset_name, model_name, advanced_options)
+        finetune_process = self.handler.unsloth_trainer(
+            dataset_name, model_name, advanced_options
+        )
         return finetune_process

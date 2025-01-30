@@ -107,9 +107,13 @@ extra = ["dev"]
 python = "3.12"
 output-file = "requirements.txt"
 
+[dependency-groups]
+dev = [
+    "ruff>=0.9.3",
+]
+
 
 
 [tool.uv]
-environments = ["sys_platform == 'windows'", "sys_platform == 'linux'"]
 cache-keys = [{ file = "requirements.txt" }]
 
