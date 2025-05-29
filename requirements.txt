@@ -326,8 +326,9 @@ fsspec==2024.9.0 ; python_version >= "3.12" and python_version < "3.13" \
 gradio-client==1.5.4 ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:281a1b6c4e45210c70b60888bb6f329c27f30645d7aa376e1f20966de82273dc \
     --hash=sha256:ad38c9a6f7fc590e822627f5bf5685321a7822b8f1a88b76d00a0621a43162d6
-gradio==5.12.0 ; python_version >= "3.12" and python_version < "3.13" \
-    --hash=sha256:b4b79a2c537131a8a5e23046565e64da40156ac24f9082e563e734e89641e160
+gradio==5.31.0 ; python_version >= "3.12" and python_version < "3.13" \
+    --hash=sha256:4a31956c7290ce1277db07f15f197b602df2e7be147083136265d52e7887b156 \
+    --hash=sha256:fba0c84d69cf489938eb64bef4c19d53300eb9af62e8cc0b12e02ae9072b7623
 h11==0.14.0 ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d \
     --hash=sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761
