@@ -1653,9 +1653,9 @@ torchvision==0.20.1+cu124 ; python_version >= "3.12" and python_version < "3.13"
 tqdm==4.67.1 ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2 \
     --hash=sha256:f8aef9c52c08c13a65f30ea34f4e5aac3fd1a34959879d7e59e63027286627f2
-transformers==4.48.0 ; python_version >= "3.12" and python_version < "3.13" \
-    --hash=sha256:03fdfcbfb8b0367fb6c9fbe9d1c9aa54dfd847618be9b52400b2811d22799cb1 \
-    --hash=sha256:6d3de6d71cb5f2a10f9775ccc17abce9620195caaf32ec96542bd2a6937f25b0
+transformers==4.50.0 ; python_version >= "3.12" and python_version < "3.13" \
+    --hash=sha256:d4b0f587ec88825981103fee0a1e80230d956ecc8a7f3feeaafbe49a233c88b8 \
+    --hash=sha256:d75465d523a28bcfef0028c671f682edee29418ab9a5a15cf8a05171e7c54cb7
 triton @ https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp312-cp312-win_amd64.whl ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:89597e7f635b1826098693785d2328bc1587d4cb6a74352437d2c6018c5da40d
 trl==0.13.0 ; python_version >= "3.12" and python_version < "3.13" \
