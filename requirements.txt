@@ -1682,9 +1682,9 @@ unsloth-zoo==2025.1.3 ; python_version >= "3.12" and python_version < "3.13" \
 unsloth==2025.1.5 ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:65e853e740fa41077bb60f28157959ca272e8788275480774e3fff8c3830e775 \
     --hash=sha256:9cc44c6eef5732298498979d8e43ab5be06fe49d0b5c8fc4e1be42dd17f4243c
-urllib3==2.3.0 ; python_version >= "3.12" and python_version < "3.13" \
-    --hash=sha256:1cee9ad369867bfdbbb48b7dd50374c0967a0bb7710050facf0dd6911440e3df \
-    --hash=sha256:f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d
+urllib3==2.6.0 ; python_version >= "3.12" and python_version < "3.13" \
+    --hash=sha256:c90f7a39f716c572c4e3e58509581ebd83f9b59cced005b7db7ad2d22b0db99f \
+    --hash=sha256:cb9bcef5a4b345d5da5d145dc3e30834f58e8018828cbc724d30b4cb7d4d49f1
 uvicorn==0.34.0 ; python_version >= "3.12" and python_version < "3.13" and sys_platform != "emscripten" \
     --hash=sha256:023dc038422502fa28a09c7a30bf2b6991512da7dcdb8fd35fe57cfc154126f4 \
     --hash=sha256:404051050cd7e905de2c9a7e61790943440b3416f49cb409f965d9dcd0fa73e9
