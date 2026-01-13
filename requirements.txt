@@ -224,9 +224,9 @@ fastapi==0.115.6 ; python_version >= "3.12" and python_version < "3.13" \
 ffmpy==0.5.0 ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:277e131f246d18e9dcfee9bb514c50749031c43582ce5ef82c57b51e3d3955c3 \
     --hash=sha256:df3799cf5816daa56d4959a023630ee53c6768b66009dae6d131519ba4b80233
-filelock==3.16.1 ; python_version >= "3.12" and python_version < "3.13" \
-    --hash=sha256:2082e5703d51fbf98ea75855d9d5527e33d8ff23099bec374a134febee6946b0 \
-    --hash=sha256:c249fbfcd5db47e5e2d6d62198e565475ee65e4831e2561c8e313fa7eb961435
+filelock==3.20.3 ; python_version >= "3.12" and python_version < "3.13" \
+    --hash=sha256:18c57ee915c7ec61cff0ecf7f0f869936c7c30191bb0cf406f1341778d0834e1 \
+    --hash=sha256:4b0dda527ee31078689fc205ec4f1c1bf7d56cf88b6dc9426c4f230e46c2dce1
 frozenlist==1.5.0 ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:000a77d6034fbad9b6bb880f7ec073027908f1b40254b5d6f26210d2dab1240e \
     --hash=sha256:03d33c2ddbc1816237a67f66336616416e2bbb6beb306e5f890f2eb22b959cdf \
