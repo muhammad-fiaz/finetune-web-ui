@@ -1758,9 +1758,9 @@ websockets==14.1 ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:ed907449fe5e021933e46a3e65d651f641975a768d0649fee59f10c2985529ed \
     --hash=sha256:f6cf0ad281c979306a6a34242b371e90e891bce504509fb6bb5246bbbf31e7b6 \
     --hash=sha256:f95ba34d71e2fa0c5d225bde3b3bdb152e957150100e75c86bc7f3964c450d89
-wheel==0.45.1 ; python_version >= "3.12" and python_version < "3.13" \
-    --hash=sha256:661e1abd9198507b1409a20c02106d9670b2576e916d58f520316666abca6729 \
-    --hash=sha256:708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248
+wheel==0.46.2 ; python_version >= "3.12" and python_version < "3.13" \
+    --hash=sha256:33ae60725d69eaa249bc1982e739943c23b34b58d51f1cb6253453773aca6e65 \
+    --hash=sha256:3d79e48fde9847618a5a181f3cc35764c349c752e2fe911e65fa17faab9809b0
 xformers @ https://download.pytorch.org/whl/cu124/xformers-0.0.29.post1-cp312-cp312-win_amd64.whl ; python_version >= "3.12" and python_version < "3.13" \
     --hash=sha256:9ef5f35330dd6b54f7457a888db07aa36a56935c5d1dc4e1a9f1909bbaa3ac4d
 xxhash==3.5.0 ; python_version >= "3.12" and python_version < "3.13" \
